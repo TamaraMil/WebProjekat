@@ -1,0 +1,184 @@
+body
+{
+    background-color: #E9EAE0;
+    font-family: 'Times New Roman', Times, serif;
+    
+}
+.title
+{
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    color: #E7625F;
+}
+.container
+{
+    display: flex;
+    border: 5pt;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+.loginContainer
+{
+   
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    flex-shrink: 0;
+    
+}
+
+.loginRow
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;   
+    margin: 25px;
+    min-width:200px;
+
+ 
+}
+.loginInput
+{
+    height: 25px; 
+    width: 200px;
+
+}
+.loginText
+{
+    text-align: left;
+    color: #C85250;
+}
+.clientContainer
+{
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: start;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    min-width: 450px;
+}
+.adminClient
+{
+    margin: 10px;
+    width: 95%;
+    font-size: 20px;
+    padding: 10px;
+    width: auto;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    background-color: rgb(216, 216, 216);
+    border: 1px solid black;
+    border-radius: 10px;
+}
+.clientInfoContainer
+{
+    display: flex;
+    width: 90%;
+    height: 90%;
+    margin: 10px;
+    padding: 10px;
+    font-size: 20px;
+    flex-direction: column;
+    border: 1px solid black;
+    background-color: rgb(216, 216, 216);
+    border-radius: 10px;
+    
+}
+.lblInfo
+{
+    font-family: 'Times New Roman', Times, serif;
+}
+.clientInfoPretrazi
+{
+    margin-top: 10px;
+}
+.addKorisnikaRow
+{
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+    padding: 10px;
+}
+.btnDodajklijenta
+{
+    margin: 10px;
+}
+.btnAdd
+{
+    margin: 10px
+}
+.racuniContainer
+{
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+  
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 10px;
+    height: 90%;
+}
+.selectorContainer
+{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(216, 216, 216);
+    margin: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    
+
+
+}
+.selectorVrsteRacuna
+{
+    margin: 10px;
+    padding: 10px;
+    
+    
+}
+.racuniInfoContainer
+{
+    display: flex;
+    flex-direction: row;
+}
+  
+.stanjeDiv
+{
+    
+    display: flex;
+    flex-direction: row;
+}
+.racunHolder
+{
+    background-color:rgb(216, 216, 216); 
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    
+    font-family: 'Times New Roman', Times, serif;
+    margin:10px;
+}
+
+.racuniInfoContainer
+{
+    display: flex;
+    flex-direction: column;
+    
+}
+.forma
+{
+    display: flex;
+    flex-direction: column;
+}
