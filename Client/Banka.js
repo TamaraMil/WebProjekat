@@ -217,8 +217,105 @@ export class Banka
             btnUnesiRacun.onclick = (ev)=>this.dodajFormu(selectorRacunaContainer,racuniInfoContainer,btnUnesiRacun)
             btnUnesiRacun.innerHTML = "Unesi Racun"
             selectorRacunaContainer.appendChild(btnUnesiRacun);
+
+            let btnIzmeniRacun = document.createElement("button");
+            btnIzmeniRacun.innerHTML = "Izmeni Racun"
+            selectorRacunaContainer.appendChild(btnIzmeniRacun);
+
+            btnIzmeniRacun.onclick = (ev)=>this.dodajFormuIzmeni(selectorRacunaContainer)
+
+            let btnZatvoriRacun = document.createElement("button");
+            btnZatvoriRacun.innerHTML = "Zatvori racun "
+            selectorRacunaContainer.appendChild(btnZatvoriRacun);
+
+            btnZatvoriRacun.onclick = (ev)=>this.dodajFormuZatvori(selectorRacunaContainer)
+            
+
+            let btnIzbrisi = document.createElement("button");
+            btnIzbrisi.innerHTML = "Izbrisi racun "
+            selectorRacunaContainer.appendChild(btnIzbrisi);
+
+            btnIzbrisi.onclick = (ev)=>this.dodajIzbrisi(selectorRacunaContainer)
+
+            
+            
         }
 
+    }
+    dodajFormuZatvori(gde)
+    {
+        let forma = document.createElement("div");
+        forma.className = "formaZatvori"
+        let lblBrojRacuna = document.createElement("label");
+        lblBrojRacuna.innerHTML = "Broj Racuna:";
+        forma.appendChild(lblBrojRacuna);
+
+        let inputBrojRacuna = document.createElement("input");
+        inputBrojRacuna.type = "number";
+        inputBrojRacuna.placeholder = "Uneti broj racuna";
+        forma.appendChild(inputBrojRacuna)
+
+        let lblZatvaranja = document.createElement("label");
+        lblZatvaranja.innerHTML = "Datum Zatvaranja:"
+        forma.appendChild(lblZatvaranja)
+
+        let inputDatumZatvaranja = document.createElement("input");
+        inputDatumZatvaranja.type = "date"
+        inputDatumZatvaranja.placeholder = "datum";
+        forma.appendChild(inputDatumZatvaranja);
+
+        let btnDodajRacun = document.createElement("button");
+        btnDodajRacun.innerHTML = "Zatvori"
+        btnDodajRacun.onclick = (ev)=>this. ZatvoriRacun(inputBrojRacuna.value,inputDatumZatvaranja.value.toString())
+        forma.appendChild(btnDodajRacun);
+        gde.appendChild(forma)
+    }
+
+    dodajFormuIzmeni(gde)
+    {
+        let forma = document.createElement("div");
+        forma.className = "formaIzmeni"
+        let lblBrojRacuna = document.createElement("label");
+        lblBrojRacuna.innerHTML = "Broj Racuna:";
+        forma.appendChild(lblBrojRacuna);
+
+        let inputBrojRacuna = document.createElement("input");
+        inputBrojRacuna.type = "number";
+        inputBrojRacuna.placeholder = "Uneti broj racuna";
+        forma.appendChild(inputBrojRacuna)
+
+        let lblStanje = document.createElement("label");
+        lblStanje.innerHTML = "Stanje:";
+        forma.appendChild(lblStanje);
+
+        let inputStanjeRacuna = document.createElement("input");
+        inputStanjeRacuna.type = "number";
+        inputStanjeRacuna.placeholder = "Uneti novo stanje";
+        forma.appendChild(inputStanjeRacuna)
+
+        let lblvaluta = document.createElement("label");
+        lblvaluta.innerHTML = "Valuta:"
+        forma.appendChild(lblvaluta)
+
+        let inputValuta = document.createElement("input");
+        inputValuta.type = "text";
+        inputValuta.placeholder = "Uneti valutu  racuna";
+        forma.appendChild(inputValuta);
+
+        let lblOtvaranja = document.createElement("label");
+        lblOtvaranja.innerHTML = "Datum Otvaranja:"
+        forma.appendChild(lblOtvaranja)
+
+        let inputDatumOtvaranja = document.createElement("input");
+        inputDatumOtvaranja.type = "date"
+        inputDatumOtvaranja.placeholder = "datum";
+        forma.appendChild(inputDatumOtvaranja);
+
+        let btnDodajRacun = document.createElement("button");
+        btnDodajRacun.innerHTML = "Izmeni racun"
+        btnDodajRacun.onclick = (ev)=>this.promeniRacun(inputBrojRacuna.value,inputStanjeRacuna.value,inputValuta.value,inputDatumOtvaranja.value.toString())
+        forma.appendChild(btnDodajRacun);
+        gde.appendChild(forma)
     }
     addkorisnik()
     {
@@ -390,7 +487,7 @@ export class Banka
         let btnAdd = document.createElement("button");
         btnAdd.innerHTML = "Dodaj";
         btnAdd.className = "btnAdd"
-        
+        btnAdd.onclick = (ev)=> this.dodajKorisnika(inputIme.value,inputPrezime.value,inputAdresa.value,inputDatumRodjenja.value,inputJMBG.value)
         placeForBtn.appendChild(btnAdd);
 
 
@@ -445,6 +542,7 @@ export class Banka
 
 
     }
+
     dodajKorisnika(ime,prezime,adresa,datum,jmbg)
     {
         if(ime === null || ime ===undefined || ime === "")
@@ -462,15 +560,14 @@ export class Banka
             alert("Unesite Vasu Adresu!");
             return;
         }
-        if(jmbg != 13)
+        if(jmbg.length != 13)
         {
             alert("JMBG mora imati 13 cifara!");
             return;
         }
-        if(inputDatumRodjenja.value)
-        btnAdd.onclick = (ev)=>
+        
         {
-            fetch("https://localhost:5001/Korisnik/DodatiKorisnika/" + ime + "/"+ prezime + "/"+ jmbg + "/" + datum + "/" + inputAdresa,
+            fetch("https://localhost:5001/Korisnik/DodatiKorisnika/" + ime + "/"+ prezime + "/"+ jmbg + "/" + datum + "/" + adresa,
             {
                 method: "POST"
             }).then(
@@ -478,16 +575,19 @@ export class Banka
                 {
                     if(s.ok)
                     {
-                        this.korisnik = new Korisnik(p.id,p.ime,p.prezime,p.jmbg,p.datumRodjenja, p.adresa)
-                        this.korisnik.drawInfoUser(place);
+                        this.korisnik = new Korisnik(s.id,s.ime,s.prezime,s.jmbg,s.datumRodjenja, s.adresa)
+                        this.deleteElementswith("clientInfoContainer")
+                        let tmp = document.createElement("div")
+                        this.klientContainer.appendChild(tmp);
+                        this.klientContainer.className = "clientInfoContainer"
+                        this.korisnik.drawInfoUser(tmp);
 
-                        placeForBtn.removeChild(btnAdd);
         
-                        let btnDodaj = document.createElement("button");
-                        btnDodaj.innerHTML = "Dodaj klijenta";
-                        btnDodaj.className = "btnDodajklijenta"
-                        placeForBtn.appendChild(btnDodaj)
-                        btnAdd.onclick = (ev)=>this.addkorisnik();
+                        // let btnDodaj = document.createElement("button");
+                        // btnDodaj.innerHTML = "Dodaj klijenta";
+                        // btnDodaj.className = "btnDodajklijenta"
+                        // placeForBtn.appendChild(btnDodaj)
+                        // btnAdd.onclick = (ev)=>this.addkorisnik();
                     }
                 }
             );
@@ -525,7 +625,7 @@ export class Banka
                                 var v = new VrsteRacuna(element.id,element.vrstaNaziv);
                                 lista.push(v);
                                  op = document.createElement("option");
-                                op.innerHTML = v.naziv
+                                 op.innerHTML = v.naziv
                                  op.value = v.id
                                  se.appendChild(op)
 
@@ -537,7 +637,6 @@ export class Banka
     }
     dodajFormu(gde,gdeUneti,btn)
     {
-        btn.isEnabled = true;
         let forma = document.createElement("div");
         forma.className = "forma"
         let lblBrojRacuna = document.createElement("label");
@@ -573,8 +672,7 @@ export class Banka
     }
     dodajRacun(gde,brojRacuna,valuta,date,btn)
     {
-        btn.isEnabled = false;
-        this.deleteElementswith("forma")
+        
 
         if(brojRacuna === null || brojRacuna === "" || brojRacuna===undefined)
         {
@@ -598,7 +696,7 @@ export class Banka
             {
                 if(s.ok)
                 {
-
+                    this.deleteElementswith("forma")
                     this.deleteElementswith("racunHolder");
                     this.isapisatiRacune()
                 }
@@ -660,4 +758,122 @@ export class Banka
     
         return [day, month, year].join('.');
     }
+
+    promeniRacun(broj,stanje,valuta,datumOtvaranja)
+    {
+        if(broj === null || broj === "" || broj===undefined)
+        {
+            alert("Uneti broj racuna!")
+            return;
+        }
+        console.log(valuta)
+        if(valuta === null || valuta === "" || valuta===undefined)
+        {
+            alert("Uneti valutu!")
+            return;
+        }
+        if(stanje === null || stanje === "" || stanje===undefined)
+        {
+            alert("Uneti stanje!")
+            return;
+        }
+        if(datumOtvaranja === null || datumOtvaranja === "" || datumOtvaranja===undefined)
+        {
+            alert("Uneti datum otvaranja!")
+            return;
+        }
+
+        fetch("https://localhost:5001/Racun/PromenitiRacun/"+broj+"/"+valuta+"/"+stanje+"/"+datumOtvaranja,
+        {
+            method: "PUT"
+        }).then(p=>
+            {
+                if(p.ok)
+                {
+                    this.deleteElementswith("formaIzmeni")
+                    this.deleteElementswith("racunHolder");
+                    this.isapisatiRacune()
+                }
+            }
+        )
+
+
+    }
+    ZatvoriRacun(broj,datumZatvaranja)
+    {
+        if(broj === null || broj === "" || broj===undefined)
+        {
+            alert("Uneti broj racuna!")
+            return;
+        }
+       
+        if(datumZatvaranja === null || datumZatvaranja === "" || datumZatvaranja===undefined)
+        {
+            alert("Uneti datum otvaranja!")
+            return;
+        }
+
+        fetch("https://localhost:5001/Racun/PromenitiRacun/"+broj+"/"+datumZatvaranja,
+        {
+            method: "PUT"
+        }).then(p=>
+            {
+                if(p.ok)
+                {
+                    this.deleteElementswith("formaZatvori");
+                    this.deleteElementswith("racunHolder");
+                    this.isapisatiRacune()
+                }
+            }
+        )
+
+
+    }
+
+    izbrisiRacun(brojRacuna)
+    {
+        
+        if(brojRacuna === null || brojRacuna === "" || brojRacuna===undefined)
+        {
+            alert("Uneti broj racuna!")
+            return;
+        }
+
+        fetch("https://localhost:5001/Racun/IzbrisiRacun/"+ brojRacuna,
+        {
+            method: "DELETE"
+        }).then(
+            p=>
+            {
+                if(p.ok)
+                {
+                    this.deleteElementswith("formaIzbrisi");
+                    this.deleteElementswith("racunHolder");
+                    this.isapisatiRacune()
+                }
+            }
+        )
+    }
+
+
+    dodajIzbrisi(gde)
+    {
+        let forma = document.createElement("div");
+        forma.className = "formaIzbrisi"
+        let lblBrojRacuna = document.createElement("label");
+        lblBrojRacuna.innerHTML = "Broj Racuna:";
+        forma.appendChild(lblBrojRacuna);
+
+        let inputBrojRacuna = document.createElement("input");
+        inputBrojRacuna.type = "number";
+        inputBrojRacuna.placeholder = "Uneti broj racuna";
+        forma.appendChild(inputBrojRacuna)
+
+        let btnIzbrisi = document.createElement("button");
+        btnIzbrisi.innerHTML = "Izbrisi"
+        btnIzbrisi.onclick = (ev)=>this.izbrisiRacun(inputBrojRacuna.value)
+        forma.appendChild(btnIzbrisi);
+        gde.appendChild(forma)
+    }
+
 }

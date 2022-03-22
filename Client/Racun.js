@@ -60,22 +60,24 @@ export class Racun
         let datumOtvaranja = document.createElement("label");
         datumOtvaranja.innerHTML = this.formatDate(this.datumOtvaranja)
         datumDiv.appendChild(datumOtvaranja)
-
-
-        if(this.datumZatvaranja > Date("1.1.1"))
+        let tmp  = this.formatDate(this.datumZatvaranja)
+        if(tmp !=="01.01.1")
         {
+
+       
             let datumZatvaranjaDiv = document.createElement("div")
             datumZatvaranjaDiv.className = "stanjeDiv"
             racunHolder.appendChild(datumZatvaranjaDiv)
 
-            let lblDatumOtvaranja = document.createElement("label");
-            lblDatumOtvaranja.innerHTML = "Datum otvaranja"
-            datumZatvaranjaDiv.appendChild(lblDatumOtvaranja)
+            let lblDatumZatvaranja = document.createElement("label");
+            lblDatumZatvaranja.innerHTML = "Datum Zatvaranja"
+            datumZatvaranjaDiv.appendChild(lblDatumZatvaranja)
 
             let datumZatvaranja = document.createElement("label");
             datumZatvaranja.innerHTML = this.formatDate(this.datumZatvaranja)
             datumZatvaranjaDiv.appendChild(datumZatvaranja)
         }
+    
         place.appendChild(racunHolder)
 
 

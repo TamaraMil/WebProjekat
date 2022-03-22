@@ -94,7 +94,7 @@ namespace Banka.Controllers
                 var vrstaRacuna = await Context.VrsteRacuna.Where(p=>p.id == vrstaRacunaid).FirstOrDefaultAsync();
                 var racun = new Racun();
                 racun.Broj = brojRacuna;
-                racun.DatumOtvaranja = new DateTime();
+                racun.DatumOtvaranja = Convert.ToDateTime(datum);
                 racun.Valuta = valuta;
                 racun.Stanje = 0.0;
                 racun.korisnik = korisnik;
@@ -110,29 +110,44 @@ namespace Banka.Controllers
            
         }
 
-        [Route("PromenitiRacun")]
+        [Route("PromenitiRacun/{brojRacuna}/{valuta}/{stanje}/{datumOtvaranja}")]
         [HttpPut]
-        public async Task<ActionResult> PromeniRacun([FromBody]Racun racun)
+        public async Task<ActionResult> PromeniRacun(int brojRacuna,string valuta, double stanje, string datumOtvaranja )
         {
-            if(racun.ID < 0)
+            if(brojRacuna < 0)
             {
                 return BadRequest("ID nije u redu");
             }
-            if(racun.Broj == null)
-            {
-                return BadRequest("Broj racuna nije u redu!");
-            }
-            if(racun.Stanje == null)
-            {
-                return BadRequest("Stanje nije u redu");
-            }
-            if(racun.Valuta.Length >= 30 && String.IsNullOrWhiteSpace(racun.Valuta))
+            if(valuta.Length >= 30 && String.IsNullOrWhiteSpace(valuta))
             {
                 return BadRequest("Valute nije u redu");
             }
             try
             {
-                Context.Racuni.Update(racun);
+                var racun = await Context.Racuni.Where(p=>p.Broj==Convert.ToInt64(brojRacuna)).FirstOrDefaultAsync();
+                racun.Stanje = stanje;
+                racun.DatumOtvaranja = Convert.ToDateTime(datumOtvaranja);
+                racun.Valuta = valuta;
+                await Context.SaveChangesAsync();
+                return Ok($"Racun {racun.Broj} je promenjen!");
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        [Route("PromenitiRacun/{brojRacuna}/{datumZatvaranja}")]
+        [HttpPut]
+        public async Task<ActionResult> PromeniRacun(int brojRacuna ,string datumZatvaranja )
+        {
+            if(brojRacuna < 0)
+            {
+                return BadRequest("ID nije u redu");
+            }
+            try
+            {
+                var racun = await Context.Racuni.Where(p=>p.Broj==Convert.ToInt64(brojRacuna)).FirstOrDefaultAsync();
+                racun.DatumZatvaranja = Convert.ToDateTime(datumZatvaranja);
                 await Context.SaveChangesAsync();
                 return Ok($"Racun {racun.Broj} je promenjen!");
             }
@@ -142,21 +157,20 @@ namespace Banka.Controllers
             }
         }
 
-        [Route("IzbrisiRacun/{id}")]
+        [Route("IzbrisiRacun/{brojRacuna}")]
         [HttpDelete]
-        public async Task<ActionResult> IzbrisiRacun(int id)
+        public async Task<ActionResult> IzbrisiRacun(int brojRacuna)
         {
-            if(id < 0)
+            if(brojRacuna < 0)
             {
                 return BadRequest("ID nije u redu");
             }
             try
             {
-                var racunZaBrijanje = await Context.Racuni.FindAsync(id);
-                Int64? broj = racunZaBrijanje.Broj;
+                var racunZaBrijanje = await Context.Racuni.Where(p=>p.Broj == brojRacuna).FirstOrDefaultAsync();
                 Context.Racuni.Remove(racunZaBrijanje);
                 await Context.SaveChangesAsync();
-                return Ok($"Racun {broj} je izbrisan");
+                return Ok($"Racun {brojRacuna} je izbrisan");
 
             }
             catch(Exception e)
